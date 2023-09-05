@@ -39,9 +39,9 @@ class AnimeAdapterUpload (
             val details = dbChatList[pos].details
             val video = dbChatList[pos].video
 
-            FormatterClassHelper().saveSharedPreference(context, "details", details)
+            FormatterClassHelper().saveSharedPreference(context, "title", details)
             FormatterClassHelper().saveSharedPreference(context, "videoUrl", video.toString())
-            FormatterClassHelper().saveSharedPreference(context, "details", details.toString())
+            FormatterClassHelper().saveSharedPreference(context, "episodes", details.toString())
 
             val intent = Intent(context, ViewAnime::class.java)
             context.startActivity(intent)

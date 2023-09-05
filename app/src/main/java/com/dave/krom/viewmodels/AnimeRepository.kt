@@ -44,8 +44,14 @@ class AnimeRepository(context: Context) {
                     if (convertedObject != null){
                         val imageUrl = convertedObject.images.jpg.image_url
                         val videoUrl = convertedObject.trailer.url
+                        val video = videoUrl?.toString() ?: ""
+
                         val title = convertedObject.title
-                        data.add(DbAnimeDataList(id,malId,imageUrl,videoUrl,title))
+
+                        val episode = convertedObject.episodes
+                        val episodes = episode?.toString() ?: ""
+
+                        data.add(DbAnimeDataList(id,malId,imageUrl,video,title, episodes))
                     }
 
                 } while (it.moveToNext())

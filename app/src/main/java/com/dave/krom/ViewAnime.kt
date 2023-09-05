@@ -3,29 +3,37 @@ package com.dave.krom
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.MediaController
+import android.widget.ImageView
 import android.widget.TextView
-import android.widget.VideoView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dave.krom.helper.FormatterClassHelper
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class ViewAnime : AppCompatActivity() {
 
-    private lateinit var videoView:VideoView
+    private lateinit var imageView:ImageView
     private lateinit var tvTitle:TextView
     private lateinit var tvEpisodes:TextView
     private val formatterClass = FormatterClassHelper()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_anime)
 
-        videoView = findViewById(R.id.videoView)
+        imageView = findViewById(R.id.imageView)
         tvTitle = findViewById(R.id.tvTitle)
         tvEpisodes = findViewById(R.id.tvEpisodes)
 
         getData()
+
+
 
     }
 
@@ -34,25 +42,33 @@ class ViewAnime : AppCompatActivity() {
         val videoUrl = formatterClass.retrieveSharedPreference(this, "videoUrl")
         val title = formatterClass.retrieveSharedPreference(this, "title")
         val episodes = formatterClass.retrieveSharedPreference(this, "episodes")
+        val imageUrl = formatterClass.retrieveSharedPreference(this, "imageUrl")
 
-        if (videoUrl != null && title != null && episodes != null){
+
+
+        if (videoUrl != null && title != null && episodes != null && videoUrl != ""){
 
             tvEpisodes.text = episodes
             tvTitle.text = title
 
-            val videoUri = Uri.parse(videoUrl)
-            videoView.setVideoURI(videoUri)
+            Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.user_placeholder)
+                .error(R.drawable.user_placeholder_error)
+                .into(imageView);
 
-            // Create a MediaController and set it to the VideoView
-            // Create a MediaController and set it to the VideoView
-            val mediaController = MediaController(this)
-            videoView.setMediaController(mediaController)
-            mediaController.setAnchorView(videoView)
+            Toast.makeText(this, "Please wait as we process the url", Toast.LENGTH_LONG).show()
 
-            // Start playing the video
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(2000)
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl))
+                startActivity(browserIntent)
+            }
 
-            // Start playing the video
-            videoView.start()
+
+
+
+
 
         }else{
             val intent = Intent(this, MainActivity::class.java)
@@ -62,10 +78,7 @@ class ViewAnime : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        videoView.pause()
-    }
+
 
 
 }

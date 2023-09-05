@@ -66,6 +66,7 @@
                         android:layout_height="wrap_content"/>
 
                     <LinearLayout
+                        android:id="@+id/linearPlay"
                         android:background="@drawable/text_bac"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"

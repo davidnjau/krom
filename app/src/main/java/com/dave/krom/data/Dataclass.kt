@@ -47,7 +47,7 @@ data class DbAnimeJpgImageUrl(
     val image_url:String
 )
 data class DbAnimeTrailer(
-    val url:String
+    val url:String?
 )
 
 data class DbAnimeDataList(
