@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.Toast
+import com.dave.krom.data.DbUploadRes
 import com.dave.krom.data.UrlData
 import com.dave.krom.network_request.builder.RetrofitBuilder
 import com.dave.krom.network_request.interfaces.Interface
@@ -15,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,22 +26,13 @@ import java.io.File
 
 class RetrofitCalls {
 
-    fun upload(context: Context, imageFile: File){
-
-        CoroutineScope(Dispatchers.Main).launch {
-
-            val job = Job()
-            CoroutineScope(Dispatchers.IO + job).launch {
-
-                startUpload(context, imageFile)
-
-            }.join()
-        }
-
+    fun upload(context: Context, imageFile: File)= runBlocking{
+        startUpload(context, imageFile)
     }
-    private suspend fun startUpload(context: Context, imageFile: File) {
+    private suspend fun startUpload(context: Context, imageFile: File):ArrayList<DbUploadRes> {
 
 
+        val dbUploadResList = ArrayList<DbUploadRes>()
         val job1 = Job()
         CoroutineScope(Dispatchers.Main + job1).launch {
 
@@ -82,11 +75,22 @@ class RetrofitCalls {
                                 messageToast = "Upload is successful"
 
                                 val result = body.result
-                                Log.e("-------","--------")
-                                Log.e("result",result.toString())
-                                Log.e("-------","--------")
+                                result.forEach {
 
+                                    val filename = it.filename
+                                    var episode = it.episode
+                                    episode = episode?.toString() ?: ""
 
+                                    var video = it.video
+                                    var image = it.image
+
+                                    val dbUploadRes = DbUploadRes(
+                                        "$filename episode:$episode",
+                                        video,
+                                        image)
+                                    dbUploadResList.add(dbUploadRes)
+
+                                }
 
                             }else{
                                 messageToast = "Error: Body is null"
@@ -98,11 +102,6 @@ class RetrofitCalls {
 
 
 
-                    }else{
-//                        apiInterface.errorBody()?.let {
-//                            val errorBody = JSONObject(it.string())
-//                            messageToast = errorBody.getString("message")
-//                        }
                     }
 
 
@@ -122,6 +121,8 @@ class RetrofitCalls {
             }
 
         }
+
+        return dbUploadResList
 
     }
 

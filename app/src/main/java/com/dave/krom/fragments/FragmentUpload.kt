@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dave.krom.R
 import com.dave.krom.adapters.AnimeAdapter
+import com.dave.krom.adapters.AnimeAdapterUpload
 import com.dave.krom.network_request.requests.RetrofitCalls
 import com.dave.krom.viewmodels.AnimeViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -54,10 +56,6 @@ class FragmentUpload : Fragment() {
 
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL )
 
-        val dbAnimeDataList = viewModel.getAnimeList()
-
-        val chatAdapter = AnimeAdapter(dbAnimeDataList, requireContext())
-        recyclerView.adapter = chatAdapter
 
         rootView.findViewById<RelativeLayout>(R.id.relativeLayout).setOnClickListener {
             ImagePicker.with(this)
@@ -83,6 +81,11 @@ class FragmentUpload : Fragment() {
                 imageView.setImageURI(uri)
 
                 RetrofitCalls().upload(requireContext(), imageFile)
+
+                val dbAnimeDataList = viewModel.getAnimeList()
+
+                val chatAdapter = AnimeAdapter(dbAnimeDataList, requireContext())
+                recyclerView.adapter = chatAdapter
 
 
             }

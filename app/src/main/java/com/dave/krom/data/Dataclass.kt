@@ -6,6 +6,12 @@ enum class UrlData(var message: Int) {
     BASE_URL(R.string.base_url),
     BASE_URL_IMAGE(R.string.base_url_image),
 }
+
+data class DbUploadRes(
+    val details: String,
+    val video:String,
+    val image:String
+)
 data class DbImageResponse(
     val result:List<DbImageResResult>
 )
