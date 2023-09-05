@@ -11,10 +11,10 @@
     <item
         android:id="@+id/favourite"
         android:title=""
-        android:icon="@drawable/home"/>
+        android:icon="@drawable/fav"/>
     <item
         android:id="@+id/profile"
         android:title=""
-        android:icon="@drawable/upload"/>
+        android:icon="@drawable/profile"/>
 
 </menu>
