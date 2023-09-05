@@ -9,8 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dave.krom.R
+import com.dave.krom.ViewAnime
 import com.dave.krom.data.DbAnimeDataList
 import com.dave.krom.data.DbUploadRes
+import com.dave.krom.helper.FormatterClassHelper
 import com.squareup.picasso.Picasso
 
 class AnimeAdapterUpload (
@@ -34,12 +36,15 @@ class AnimeAdapterUpload (
         override fun onClick(p0: View?) {
 
             val pos = adapterPosition
-            val id = dbChatList[pos].details
+            val details = dbChatList[pos].details
+            val video = dbChatList[pos].video
 
-//            FormatterClassHelper().saveSharedPreference(context, "id", id)
-//
-//            val intent = Intent(context, Chat::class.java)
-//            context.startActivity(intent)
+            FormatterClassHelper().saveSharedPreference(context, "details", details)
+            FormatterClassHelper().saveSharedPreference(context, "videoUrl", video.toString())
+            FormatterClassHelper().saveSharedPreference(context, "details", details.toString())
+
+            val intent = Intent(context, ViewAnime::class.java)
+            context.startActivity(intent)
         }
 
 
