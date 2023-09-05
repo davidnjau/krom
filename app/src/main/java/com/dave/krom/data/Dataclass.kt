@@ -31,7 +31,7 @@ data class DbAnimeData(
     val title:String,
     val type:String,
     val source:String,
-    val episodes:Int,
+    val episodes:Any?,
     val status:String,
     val airing:String,
     val duration:String,
@@ -53,5 +53,8 @@ data class DbAnimeTrailer(
 data class DbAnimeDataList(
     val id:Long,
     val malId:String,
-    val imageUrl:String
+    val imageUrl:String,
+    val videoUrl:String,
+    val title:String,
+    val episode:String?,
 )

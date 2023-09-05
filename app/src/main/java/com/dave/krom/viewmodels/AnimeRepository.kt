@@ -43,7 +43,9 @@ class AnimeRepository(context: Context) {
                         Gson().fromJson(json, DbAnimeData::class.java)
                     if (convertedObject != null){
                         val imageUrl = convertedObject.images.jpg.image_url
-                        data.add(DbAnimeDataList(id,malId,imageUrl))
+                        val videoUrl = convertedObject.trailer.url
+                        val title = convertedObject.title
+                        data.add(DbAnimeDataList(id,malId,imageUrl,videoUrl,title))
                     }
 
                 } while (it.moveToNext())

@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.dave.krom.R
+import com.dave.krom.ViewAnime
 import com.dave.krom.data.DbAnimeDataList
+import com.dave.krom.helper.FormatterClassHelper
 import com.squareup.picasso.Picasso
 
 class AnimeAdapter (
@@ -30,11 +32,24 @@ class AnimeAdapter (
 
             val pos = adapterPosition
             val id = dbChatList[pos].id
+            val imageUrl = dbChatList[pos].imageUrl
+            val title = dbChatList[pos].title
+            val malId = dbChatList[pos].malId
+            val videoUrl = dbChatList[pos].videoUrl
+            val episode = dbChatList[pos].episode
+            val episodes = episode?.toString() ?: ""
 
-//            FormatterClassHelper().saveSharedPreference(context, "id", id)
-//
-//            val intent = Intent(context, Chat::class.java)
-//            context.startActivity(intent)
+
+
+            FormatterClassHelper().saveSharedPreference(context, "id", id.toString())
+            FormatterClassHelper().saveSharedPreference(context, "imageUrl", imageUrl.toString())
+            FormatterClassHelper().saveSharedPreference(context, "title", title.toString())
+            FormatterClassHelper().saveSharedPreference(context, "malId", malId.toString())
+            FormatterClassHelper().saveSharedPreference(context, "videoUrl", videoUrl.toString())
+            FormatterClassHelper().saveSharedPreference(context, "episodes", episodes.toString())
+
+            val intent = Intent(context, ViewAnime::class.java)
+            context.startActivity(intent)
         }
 
 
