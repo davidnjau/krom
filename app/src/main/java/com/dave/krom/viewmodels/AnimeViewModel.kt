@@ -18,7 +18,7 @@ class AnimeViewModel(application: Application):AndroidViewModel(application) {
     fun insertData(malId:Int, json:String){
         repository.insertData(malId, json)
     }
-    fun getAnimeList():List<DbAnimeDataList>{
+    fun getAnimeList():ArrayList<DbAnimeDataList>{
 
         return repository.getAllData()
     }

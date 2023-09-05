@@ -14,9 +14,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val viewModel = ViewModelProvider(this)[AnimeViewModel::class.java]
-
-
         val firstFragment= FragmentHome()
         val secondFragment= FragmentUpload()
 

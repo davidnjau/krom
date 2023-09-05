@@ -1,13 +1,16 @@
 package com.dave.krom.viewmodels
 
+import android.R.string
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import androidx.lifecycle.AndroidViewModel
+import com.dave.krom.data.DbAnimeData
 import com.dave.krom.data.DbAnimeDataList
 import com.dave.krom.sqlite.DatabaseHelper
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+
 
 class AnimeRepository(context: Context) {
 
@@ -23,11 +26,11 @@ class AnimeRepository(context: Context) {
     }
 
     @SuppressLint("Range")
-    fun getAllData(): List<DbAnimeDataList> {
+    fun getAllData(): ArrayList<DbAnimeDataList> {
         val db = dbHelper.readableDatabase
-        val data = mutableListOf<DbAnimeDataList>()
+        val data = ArrayList<DbAnimeDataList>()
 
-        val cursor: Cursor? = db.rawQuery("SELECT * FROM your_table_name", null)
+        val cursor: Cursor? = db.rawQuery("SELECT * FROM anime", null)
 
         cursor?.use {
             if (it.moveToFirst()) {
@@ -36,10 +39,18 @@ class AnimeRepository(context: Context) {
                     val malId = it.getString(it.getColumnIndex("malId"))
                     val json = it.getString(it.getColumnIndex("json"))
 
-                    data.add(DbAnimeDataList(id,malId,json))
+                    val convertedObject =
+                        Gson().fromJson(json, DbAnimeData::class.java)
+                    if (convertedObject != null){
+                        val imageUrl = convertedObject.images.jpg.image_url
+                        data.add(DbAnimeDataList(id,malId,imageUrl))
+                    }
+
                 } while (it.moveToNext())
             }
         }
+
+
 
         return data
     }

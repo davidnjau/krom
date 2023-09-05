@@ -36,6 +36,6 @@ data class DbAnimeTrailer(
 
 data class DbAnimeDataList(
     val id:Long,
-    val mal_id:String,
-    val json:String
+    val malId:String,
+    val imageUrl:String
 )
