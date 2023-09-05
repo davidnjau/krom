@@ -12,10 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dave.krom.R
 import com.dave.krom.adapters.AnimeAdapter
+import com.dave.krom.data.DbAnimeDataList
+import com.dave.krom.network_request.requests.RetrofitCalls
 import com.dave.krom.viewmodels.AnimeViewModel
 import com.squareup.picasso.Picasso
+import java.util.ArrayList
 import kotlin.random.Random
 
 
@@ -25,6 +29,7 @@ class FragmentHome : Fragment() {
     private lateinit var viewModel: AnimeViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var imageView: ImageView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -36,10 +41,33 @@ class FragmentHome : Fragment() {
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
         imageView = rootView.findViewById(R.id.imageView)
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            // Perform your refresh operation here, e.g., fetch new data
+            fetchData()
+
+            swipeRefreshLayout.isRefreshing = false
+
+        }
+
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
 
-        val dbAnimeDataList = viewModel.getAnimeList()
+        // Observe the LiveData
+        viewModel.getAnimeListLiveData().observe(requireActivity()) { animeList ->
+            populateRecyclerView(animeList)
+        }
+
+
+
+
+
+
+        return rootView
+    }
+
+    private fun populateRecyclerView(dbAnimeDataList: ArrayList<DbAnimeDataList>) {
 
         val chatAdapter = AnimeAdapter(dbAnimeDataList, requireContext())
         recyclerView.adapter = chatAdapter
@@ -57,9 +85,12 @@ class FragmentHome : Fragment() {
                 .into(imageView);
         }
 
+    }
 
+    private fun fetchData() {
 
-        return rootView
+        RetrofitCalls().getAnimeValues(requireContext(), viewModel)
+
     }
 
 }

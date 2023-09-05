@@ -17,7 +17,7 @@ interface Interface {
         @Part file: MultipartBody.Part
     ): Response<DbImageResponse>
 
-    @GET("v4/top/anime")
+    @GET("v4/top/anime?limit=25")
     suspend fun getAnime(): Response<DbAnime>
 
 

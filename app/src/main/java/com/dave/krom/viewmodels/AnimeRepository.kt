@@ -55,5 +55,14 @@ class AnimeRepository(context: Context) {
         return data
     }
 
+    fun clearAllData() {
+        val db = dbHelper.readableDatabase
+        db.use { db ->
+            // Execute SQL DELETE commands for each table to remove all rows
+            db.execSQL("DELETE FROM anime")
+            // Repeat for other tables as needed
+        }
+    }
+
 
 }

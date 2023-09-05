@@ -150,6 +150,11 @@ class RetrofitCalls {
                     if (body != null){
 
                         val dataList = body.data
+
+                        if (dataList.isNotEmpty()){
+                            viewModel.nukeDb()
+                        }
+
                         dataList.forEach {
                             val malId = it.mal_id
                             //Convert the entire object to Json and save
@@ -157,6 +162,8 @@ class RetrofitCalls {
                             val json = gson.toJson(dnAnimeObject)
                             viewModel.insertData(malId, json)
                         }
+
+
 
                     }
 
