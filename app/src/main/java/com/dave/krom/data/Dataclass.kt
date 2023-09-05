@@ -4,7 +4,17 @@ import com.dave.krom.R
 
 enum class UrlData(var message: Int) {
     BASE_URL(R.string.base_url),
+    BASE_URL_IMAGE(R.string.base_url_image),
 }
+data class DbImageResponse(
+    val result:List<DbImageResResult>
+)
+data class DbImageResResult(
+    val filename: String,
+    val episode: Any?,
+    val video:String,
+    val image:String
+)
 data class DbAnime(
     val data:List<DbAnimeData>
 )

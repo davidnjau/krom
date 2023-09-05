@@ -3,5 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="base_url">https://api.jikan.moe/</string>
+    <string name="base_url_image">https://api.trace.moe/</string>
 
 </resources>
